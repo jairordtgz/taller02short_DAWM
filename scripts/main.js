@@ -4,6 +4,8 @@
  */
 
 // Formateador de moneda USD
+
+
 const fmtUSD = new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });
 
 let loadData = () => {
@@ -17,8 +19,27 @@ let loadData = () => {
                 return doc;
             })
             .then(doc => {
-                console.log(doc);                
+                console.log(doc);    
+                
+            let container = document.getElementById("transacciones");
+            let transacciones = doc.getElementsByTagName("category"); 
+
+            for (let transaccion of transacciones ){
+
+                let dia = transaccion.getElementsByTagName("Date")[0].textContent; 
+                let tipo = transaccion.getElementsByTagName("coffee_name")[0].textContent; 
+                let valor = transaccion.getElementsByTagName("money")[0].textContent; 
+
+                container.innerHTML += `
+                
+                <tr> ${dia}</tr> 
+                <tr> ${tipo}</tr> 
+                <tr> ${valor} </tr> 
+                
+                `
+            }
             })
+
 
     } catch (err) {
         console.error(err);
@@ -27,3 +48,7 @@ let loadData = () => {
 }
 
 window.addEventListener('DOMContentLoaded', loadData);
+
+(() => {
+    loadData(); 
+})();
