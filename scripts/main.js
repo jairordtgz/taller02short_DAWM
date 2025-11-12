@@ -38,7 +38,7 @@ let loadData = () => {
                 
                 `
             }
-            })
+            }).catch(err => console.error("Error al procesar el XML:", err));
 
 
     } catch (err) {
