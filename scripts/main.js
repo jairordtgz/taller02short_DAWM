@@ -11,7 +11,7 @@ const fmtUSD = new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'US
 let loadData = () => {
 
     try {
-        fetch('https://raw.githubusercontent.com/DATA-DAWM/Datos/refs/heads/main/Coffee/Coffe_sales.xml')
+        fetch('https://raw.githubusercontent.com/DATA-DAWM/Datos/main/Coffee/Coffe_sales.xml')
             .then(response => response.text())
             .then(xml => {
                 const parser = new DOMParser();
@@ -19,26 +19,27 @@ let loadData = () => {
                 return doc;
             })
             .then(doc => {
-                console.log(doc);    
-                
-            let container = document.getElementById("transacciones");
-            let transacciones = doc.getElementsByTagName("category"); 
+                console.log(doc);
 
-            for (let transaccion of transacciones ){
+                let container = document.getElementById("transacciones");
+                let transacciones = doc.getElementsByTagName("category");
 
-                let dia = transaccion.getElementsByTagName("Date")[0].textContent; 
-                let tipo = transaccion.getElementsByTagName("coffee_name")[0].textContent; 
-                let valor = transaccion.getElementsByTagName("money")[0].textContent; 
+                // Mostrar solo los primeros 20 elementos
+                for (let i = 0; i < Math.min(20, transacciones.length); i++) {
+                    let transaccion = transacciones[i];
 
-                container.innerHTML += `
-                
-                <tr> 
-                <td> ${dia} </td> 
-                <td> ${tipo} </td>
-                <td> ${valor} </td>
-                </tr> 
-                `
-            }
+                    let dia = transaccion.getElementsByTagName("Date")[0]?.textContent || "";
+                    let tipo = transaccion.getElementsByTagName("coffee_name")[0]?.textContent || "";
+                    let valor = transaccion.getElementsByTagName("money")[0]?.textContent || "";
+
+                    container.innerHTML += `
+                        <tr>
+                            <td>${dia}</td>
+                            <td>${tipo}</td>
+                            <td>${fmtUSD.format(valor)}</td>
+                        </tr>
+                    `;
+                }
             }).catch(err => console.error("Error al procesar el XML:", err));
 
 
