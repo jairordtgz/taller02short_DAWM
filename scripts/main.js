@@ -32,10 +32,11 @@ let loadData = () => {
 
                 container.innerHTML += `
                 
-                <tr> ${dia}</tr> 
-                <tr> ${tipo}</tr> 
-                <tr> ${valor} </tr> 
-                
+                <tr> 
+                <td> ${dia} </td> 
+                <td> ${tipo} </td>
+                <td> ${valor} </td>
+                </tr> 
                 `
             }
             }).catch(err => console.error("Error al procesar el XML:", err));
@@ -48,7 +49,3 @@ let loadData = () => {
 }
 
 window.addEventListener('DOMContentLoaded', loadData);
-
-(() => {
-    loadData(); 
-})();
